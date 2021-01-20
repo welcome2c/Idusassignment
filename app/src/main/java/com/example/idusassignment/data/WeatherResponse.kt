@@ -1,11 +1,12 @@
 package com.example.idusassignment.data
 
-import com.example.idusassignment.data.model.WeatherResult
 import com.google.gson.annotations.SerializedName
 
 data class WeatherResponse(
     @SerializedName("consolidated_weather")
-    val consolidated_weather: List<WeatherModel>
+    val consolidated_weather: List<WeatherModel>,
+    @SerializedName("title")
+    val title: String
 ) {
     data class WeatherModel(
         val id: Long,
@@ -26,13 +27,13 @@ data class WeatherResponse(
     )
 }
 
-fun List<WeatherResponse.WeatherModel>.toPresentation(): List<WeatherResult> {
-    return this.map {
-        WeatherResult(
-            it.weather_state_name,
-            it.weather_state_abbr,
-            it.the_temp,
-            it.humidity
-        )
-    }
-}
+//fun List<WeatherResponse.WeatherModel>.toPresentation(): List<WeatherResult> {
+//    return this.map {
+//        WeatherResult(
+//            it.weather_state_name,
+//            it.weather_state_abbr,
+//            it.the_temp,
+//            it.humidity
+//        )
+//    }
+//}
