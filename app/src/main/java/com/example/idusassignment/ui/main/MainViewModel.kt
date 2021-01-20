@@ -3,8 +3,6 @@ package com.example.idusassignment.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.idusassignment.data.WeatherResponse
-import com.example.idusassignment.data.model.CityModel
 import com.example.idusassignment.data.model.WeatherPresentation
 import com.example.idusassignment.data.repository.WeatherRepository
 import com.example.idusassignment.ui.base.BaseViewModel
@@ -31,8 +29,8 @@ class MainViewModel(
     private var job: Job? = null
 
     fun searchCity() {
-        var list: MutableList<WeatherPresentation.WeatherResult> = mutableListOf()
-        val list2: MutableList<WeatherPresentation> = mutableListOf()
+        var weatherList: MutableList<WeatherPresentation.WeatherResult>
+        val resultList: MutableList<WeatherPresentation> = mutableListOf()
 
         job?.cancel()
         job = viewModelScope.launch {
@@ -50,17 +48,17 @@ class MainViewModel(
                         weatherRepository.getWeather(it.woeid)
                     }
                     .onCompletion {
-                        _weatherData.value = list2
+                        _weatherData.value = resultList
                         _isLoading.value = false
                     }
                     .collect { it ->
-                        list = mutableListOf()
+                        weatherList = mutableListOf()
 
                         val title = it.title
                         it.consolidated_weather.asFlow().take(2).collect {
-                            list.add(WeatherPresentation.WeatherResult(it.weather_state_name, it.weather_state_abbr, it.the_temp, it.humidity))
+                            weatherList.add(WeatherPresentation.WeatherResult(it.weather_state_name, it.weather_state_abbr, it.the_temp, it.humidity))
                         }
-                        list2.add(WeatherPresentation(title, list))
+                        resultList.add(WeatherPresentation(title, weatherList))
                     }
         }
     }
