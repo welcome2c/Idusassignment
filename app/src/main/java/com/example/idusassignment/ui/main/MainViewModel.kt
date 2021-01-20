@@ -39,26 +39,25 @@ class MainViewModel(
             weatherRepository
                     .getCity()
                     .flatMapConcat {
-                        //응답인 Flow 가 완료되어야 다음 단계를 순차적으로 진행한다.
                         it.asFlow()
                     }
 
                     .flatMapMerge {
-                        // 응답인 Flow의 완료 여부와 상관없이 다음 단계를 동시에 진행한다.
                         weatherRepository.getWeather(it.woeid)
                     }
                     .onCompletion {
                         _weatherData.value = resultList
                         _isLoading.value = false
                     }
-                    .collect { it ->
+                    .collect {
                         weatherList = mutableListOf()
 
-                        val title = it.title
-                        it.consolidated_weather.asFlow().take(2).collect {
-                            weatherList.add(WeatherPresentation.WeatherResult(it.weather_state_name, it.weather_state_abbr, it.the_temp, it.humidity))
-                        }
-                        resultList.add(WeatherPresentation(title, weatherList))
+                        it.consolidated_weather
+                            .take(2)
+                            .forEach {
+                                weatherList.add(WeatherPresentation.WeatherResult(it.weather_state_name, it.weather_state_abbr, it.the_temp, it.humidity))
+                            }
+                        resultList.add(WeatherPresentation(it.title, weatherList))
                     }
         }
     }
