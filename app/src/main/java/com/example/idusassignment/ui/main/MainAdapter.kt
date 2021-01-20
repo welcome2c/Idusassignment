@@ -14,17 +14,17 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items: MutableList<WeatherPresentation> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType) {
+        return when (viewType) {
             R.layout.item_header ->
                 HeaderViewHolder(
-                        parent,
-                        R.layout.item_header
+                    parent,
+                    R.layout.item_header
                 )
             R.layout.item_weather ->
                 WeatherViewHolder(
-                        BR.item,
-                        parent,
-                        R.layout.item_header
+                    BR.item,
+                    parent,
+                    R.layout.item_weather
                 )
             else -> {
                 throw IllegalArgumentException()
@@ -34,12 +34,12 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is WeatherViewHolder) {
-            holder.bind(items[position -1])
+            holder.bind(items[position - 1])
         }
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items.size + 1
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -55,14 +55,21 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged();
     }
 
+    fun clearList() {
+        items.clear()
+        notifyDataSetChanged()
+    }
+
     class HeaderViewHolder(
-            parent: ViewGroup,
-            layoutRes: Int
-    ) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(layoutRes, parent, false))
+        parent: ViewGroup,
+        layoutRes: Int
+    ) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
+    )
 
     class WeatherViewHolder(
-            itemId: Int,
-            parent: ViewGroup,
-            layoutRes: Int
+        itemId: Int,
+        parent: ViewGroup,
+        layoutRes: Int
     ) : BaseViewHolder<WeatherPresentation, ItemWeatherBinding>(itemId, parent, layoutRes)
 }

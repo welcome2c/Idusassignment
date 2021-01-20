@@ -8,9 +8,9 @@ object GlideUtil {
     fun loadImage(imageView: ImageView, url: String) {
         Glide
              .with(imageView.context)
-             .load(url)
-             .error(R.drawable.ic_error)
-             .placeholder(R.drawable.drawable_loading)
-             .into(imageView)
+                .load(url)
+                .error(R.drawable.ic_error)
+                .placeholder(R.drawable.drawable_loading)
+                .into(imageView)
     }
 }

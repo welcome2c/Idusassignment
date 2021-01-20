@@ -2,11 +2,10 @@ package com.example.idusassignment.ext
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import kotlin.math.floor
 
 @BindingAdapter("setTemp")
 fun TextView.setTemp(temp: Double) {
-    this.text = floor(temp).toString() + "℃"
+    this.text = "${temp.toInt()}℃"
 }
 
 @BindingAdapter("setHumidity")
