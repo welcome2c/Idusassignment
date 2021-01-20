@@ -57,5 +57,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun reLoadData() {
         mainViewModel.searchCity()
+        mainAdapter.clearList()
     }
 }
